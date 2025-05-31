@@ -1,42 +1,39 @@
+// src/app/components/utils/postUser.ts
 
+export interface UserData {
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  email: string;
+  password: string;
+  role: string;
+}
 
-const url = '/api/users/register'
-
-export const postUser = async (UserData: { first_name: string; last_name: string; phone_number: string; email: string; password: string; role:string;}) => {
+export const postUser = async (userData: UserData) => {
   try {
-    if (!url) {
-      throw new Error('Base URL not set.');
-    }
-    const response = await fetch(url, {
+    console.log('Sending data to API:', userData);
+    
+    const response = await fetch('https://posinnove.onrender.com/api/users/register/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(UserData),
+      body: JSON.stringify(userData),
     });
 
+    const data = await response.json();
+    console.log('API response:', data);
+    
     if (!response.ok) {
-      const error = await response.text();
-      return { error: error || response.statusText || `Error ${response.status}: ${response.statusText}` };
+      throw new Error(data.error || 'Registration failed');
     }
 
-    const result = await response.json();
-    return { data: result };
+    return { data, error: null };
   } catch (error) {
-    return { error: (error as Error).message || 'An unexpected error occurred. Please try again later.' };
+    console.error('postUser error:', error);
+    return { 
+      data: null, 
+      error: error instanceof Error ? error.message : 'Unknown error occurred' 
+    };
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
