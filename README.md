@@ -40,7 +40,6 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 - React 18
 - TypeScript
 - Tailwind CSS
-- Chart.js & Recharts
 - React Hook Form
 
 ## Live Demo
